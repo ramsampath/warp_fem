@@ -1,0 +1,5 @@
+# requirements.txt
+warp-lang==1.8.0
+numpy>=1.26,<2.0
+usd-core
+#usd-core==23.11

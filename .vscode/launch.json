@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Sheet metal (GPU, no USD)",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/example_sheet_metal.py",
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal",
+        "justMyCode": true,
+        "args": ["--stage_path", "None", "--plasticity", "--num_frames", "2"],
+        "env": {
+          "PYTHONUNBUFFERED": "1",
+          "CUDA_LAUNCH_BLOCKING": "1"
+        }
+      },
+      {
+        "name": "Sheet metal (USD export)",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/example_sheet_metal.py",
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal",
+        "justMyCode": true,
+        "args": ["--plasticity", "--num_frames", "2"],
+        "env": {
+          "PYTHONUNBUFFERED": "1",
+          "CUDA_LAUNCH_BLOCKING": "1"
+        }
+      }
+    ]
+  }
+  
