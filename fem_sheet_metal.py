@@ -134,22 +134,17 @@ class fem_sheet_metal_sim:
         clearance = self._thickness + self._skin + 0.001  # add 1 mm extra
 
         b.add_cloth_grid(
-            pos=wp.vec3(-0.4, y_top + clearance, 0.2),
+            pos=wp.vec3(-0.5, y_top + clearance, 0.2),
             rot=wp.quat_from_axis_angle(wp.vec3(1,0,0), -math.pi*0.5),
             vel=wp.vec3(0.0, 0.0, 0.0),
             dim_x=self.sim_width, dim_y=self.sim_height,
             cell_x=self.cell, cell_y=self.cell,
             mass=0.05,
             fix_left=False, fix_right=False, fix_top=False, fix_bottom=False,
-            #tri_ke=5.0e4, tri_ka=5.0e4, tri_kd=3.0e3,
-            #edge_ke=1.0e4, edge_kd=2.0e3,
-            # tri_ke=5.0e4, tri_ka=5.0e4, tri_kd=8.0e3,
-            # edge_ke=1.0e4, edge_kd=2.0e3,
-            tri_ke=3.0e4, tri_ka=3.0e4, tri_kd=1.2e4,
-            edge_ke=100, edge_kd=3.0e3
+            # Reduced stiffness for stability
+            tri_ke=2.5e4, tri_ka=2.5e4, tri_kd=6.0e3,
+            edge_ke=500, edge_kd=1.5e3
             #edge_ke=7.5e3, edge_kd=2.5e3,
-            
-
         )
 
 
@@ -318,9 +313,9 @@ class fem_sheet_metal_sim:
             dev = wp.get_device()
             vel = getattr(self.state_1, "particle_qd", None)
             if vel is not None:
-                wp.launch(damp_vec3,   dim=self.model.particle_count, inputs=[vel, 0.97], device=dev)
-                wp.launch(clamp_speed, dim=self.model.particle_count, inputs=[vel, 1.5], device=dev)
-
+                # Increased damping and more aggressive velocity clamp
+                wp.launch(damp_vec3,   dim=self.model.particle_count, inputs=[vel, 0.90], device=dev)
+                wp.launch(clamp_speed, dim=self.model.particle_count, inputs=[vel, 0.5], device=dev)
 
             # plasticity update after velocity update
             #self._plastic_step()
